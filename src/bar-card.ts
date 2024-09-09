@@ -148,8 +148,8 @@ export class BarCard extends LitElement {
         }
 
         // If limit_value is defined limit the displayed value to min and max.
-        const max = getMaxMinBasedOnType(this.hass!, config.max ?? 100)
-        const min = getMaxMinBasedOnType(this.hass!, config.min ?? 0)
+        const max = getMaxMinBasedOnType(this.hass, config.max);
+        const min = getMaxMinBasedOnType(this.hass, config.min);
         if (config.limit_value) {
           entityState = Math.min(entityState, max);
           entityState = Math.max(entityState, min);
