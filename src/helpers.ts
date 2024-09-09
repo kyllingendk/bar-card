@@ -35,18 +35,12 @@ export function mapRange(num: number, in_min: number, in_max: number, out_min: n
   return ((num - in_min) * (out_max - out_min)) / (in_max - in_min) + out_min;
 }
 
-export function getMaxMinBasedOnType(hass: HomeAssistant | undefined, value: number | string): number {
+export function getMaxMinBasedOnType(value: number | string): number {
   if (typeof value === 'number') {
     return value;
   }
-  if (hass === undefined) {
-    return 0
-  }
-  const state = parseInt(hass.states[value].state);
-  if (typeof state === 'number' && !isNaN(state)) {
-    return state;
-  }
-  return 0;
+  const parsedValue = parseInt(value)
+  return isNaN(parsedValue) ? 0 : parsedValue;
 }
 
 // Check if config or Entity changed
