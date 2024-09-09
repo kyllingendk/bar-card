@@ -42,8 +42,8 @@ export function getMaxMinBasedOnType(hass: HomeAssistant | undefined, value: num
   if (hass === undefined) {
     return 0
   }
-  const state = hass.states[value].state;
-  if (typeof state === 'number') {
+  const state = parseInt(hass.states[value].state);
+  if (typeof state === 'number' && !isNaN(state)) {
     return state;
   }
   return 0;
