@@ -2,7 +2,7 @@ import { LitElement, html, customElement, property, TemplateResult, CSSResult, c
 import { HomeAssistant, fireEvent, LovelaceCardEditor, ActionConfig } from 'custom-card-helpers';
 
 import { BarCardConfig } from './types';
-import { createEditorConfigArray, arrayMove, hasConfigOrEntitiesChanged } from './helpers';
+import { createEditorConfigArray, arrayMove, hasConfigOrEntitiesChanged, getMaxMinBasedOnType } from './helpers';
 
 @customElement('bar-card-editor')
 export class BarCardEditor extends LitElement implements LovelaceCardEditor {

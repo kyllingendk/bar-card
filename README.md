@@ -35,8 +35,8 @@
 | height | string | 40px | Defines the height of the bar.
 | icon | string | icon | Defines the icon to be displayed.
 | limit_value | boolean | false | Limits value displayed to `min` and `max` value.
-| max | number | 100 | Defines maximum value of the bar.
-| min | number | 0 | Defines minimum value of the bar.
+| max | number or string | 100 | Defines maximum value of the bar using a number or a entity.
+| min | number or string | 0 | Defines minimum value of the bar using a number or a entity.
 | name | string | none | Defines custom entity name.
 | positions | object | none | Defines the positions of the card elements. See [Positions Options](#positions-options).
 | severity | object | none | A list of severity values. See [Severity Options](#severity-options).
