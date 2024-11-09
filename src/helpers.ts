@@ -35,7 +35,7 @@ export function mapRange(num: number, in_min: number, in_max: number, out_min: n
   return ((num - in_min) * (out_max - out_min)) / (in_max - in_min) + out_min;
 }
 
-export function getMaxMinBasedOnType(hass: HomeAssistant | undefined, value: number | string): number {
+export function getNumericalValueBasedOnType(hass: HomeAssistant | undefined, value: number | string): number {
   if (typeof value === "number") {
     return value;
   } 

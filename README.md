@@ -41,7 +41,7 @@
 | positions | object | none | Defines the positions of the card elements. See [Positions Options](#positions-options).
 | severity | object | none | A list of severity values. See [Severity Options](#severity-options).
 | tap_action | object | none | See [home assistant documentation](https://www.home-assistant.io/lovelace/actions/).
-| target | number | none | Defines and enables target marker value.
+| target | number or string | none | Defines and enables target marker value using a number or a entity.
 | title | string | none | Adds title header to the card.
 | unit_of_measurement | string | attribute | Defines the unit of measurement to be displayed.
 | width | string | 100% | Defines the width of the bar.

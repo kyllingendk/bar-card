@@ -14,7 +14,7 @@ import { BarCardConfig } from './types';
 import { actionHandler } from './action-handler-directive';
 import { CARD_VERSION } from './const';
 import { localize } from './localize/localize';
-import { mergeDeep, hasConfigOrEntitiesChanged, createConfigArray, getMaxMinBasedOnType } from './helpers';
+import { mergeDeep, hasConfigOrEntitiesChanged, createConfigArray, getNumericalValueBasedOnType } from './helpers';
 import { styles } from './styles';
 
 /* eslint no-console: 0 */
@@ -148,8 +148,8 @@ export class BarCard extends LitElement {
         }
 
         // If limit_value is defined limit the displayed value to min and max.
-        const max = getMaxMinBasedOnType(this.hass, config.max);
-        const min = getMaxMinBasedOnType(this.hass, config.min);
+        const max = getNumericalValueBasedOnType(this.hass, config.max);
+        const min = getNumericalValueBasedOnType(this.hass, config.min);
         if (config.limit_value) {
           entityState = Math.min(entityState, max);
           entityState = Math.max(entityState, min);
@@ -355,9 +355,10 @@ export class BarCard extends LitElement {
 
         // Set bar percent and marker percent based on value difference.
         const barPercent = this._computePercent(entityState, index, max, min);
-        const targetMarkerPercent = this._computePercent(config.target, index, max, min);
+        const targetValue = getNumericalValueBasedOnType(this.hass, config.target ?? 0);
+        const targetMarkerPercent = this._computePercent(targetValue, index, max, min);
         let targetStartPercent = barPercent;
-        let targetEndPercent = this._computePercent(config.target, index, max, min);
+        let targetEndPercent = this._computePercent(targetValue, index, max, min);
         if (targetEndPercent < targetStartPercent) {
           targetStartPercent = targetEndPercent;
           targetEndPercent = barPercent;
@@ -537,7 +538,7 @@ export class BarCard extends LitElement {
     return icon;
   }
 
-  private _computePercent(value: string, index: number, max: number, min: number): number {
+  private _computePercent(value: string | number, index: number, max: number, min: number): number {
     const config = this._configArray[index];
     const numberValue = Number(value);
 
