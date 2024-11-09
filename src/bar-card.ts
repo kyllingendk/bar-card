@@ -418,7 +418,7 @@ export class BarCard extends LitElement {
                       style="--bar-color: ${barColor}; --bar-percent: ${targetStartPercent}%; --bar-target-percent: ${targetEndPercent}%; --bar-direction: ${barDirection};"
                     ></bar-card-targetbar>
                     <bar-card-markerbar
-                      style="--bar-color: ${barColor}; --bar-target-percent: ${targetMarkerPercent}%; ${markerDirection}: calc(${targetMarkerPercent}% - 1px); ${markerStyle}}"
+                      style="--bar-color: ${barColor}; --bar-target-percent: ${targetEndPercent}%; ${markerDirection}: calc(var(--bar-target-percent) - 1px); ${markerStyle}"
                     ></bar-card-markerbar>
                   `
                 : ''}
