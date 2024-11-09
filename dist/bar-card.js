@@ -1191,7 +1191,7 @@ found at http://polymer.github.io/PATENTS.txt
               >
             `;break;case"inside":P=z`
               <bar-card-indicator style="--bar-color: ${O};">${E}</bar-card-indicator>
-            `}const T=this._computePercent(s,t,c,l),j=fe(this.hass,null!==(e=a.target)&&void 0!==e?e:0),V=this._computePercent(j,t,c,l);let I=T,U=this._computePercent(j,t,c,l);U<I&&(I=U,U=T);let R="";a.width&&(g="center",R="width: "+a.width);const M=this._animationState[t];let L="right",B=100*T,D="animationbar-horizontal";"animation-increase-vertical"!=M&&"animation-decrease-vertical"!=M||(L="bottom",D="animationbar-vertical",B=100*(100-T)),o.push(z`
+            `}const T=this._computePercent(s,t,c,l),j=fe(this.hass,null!==(e=a.target)&&void 0!==e?e:0);this._computePercent(j,t,c,l);let V=T,I=this._computePercent(j,t,c,l);I<V&&(V=I,I=T);let U="";a.width&&(g="center",U="width: "+a.width);const R=this._animationState[t];let M="right",L=100*T,B="animationbar-horizontal";"animation-increase-vertical"!=R&&"animation-decrease-vertical"!=R||(M="bottom",B="animationbar-vertical",L=100*(100-T)),o.push(z`
           <bar-card-card
             style="flex-direction: ${v}; align-items: ${g};"
             @action=${this._handleAction}
@@ -1200,13 +1200,13 @@ found at http://polymer.github.io/PATENTS.txt
           >
             ${h} ${N} ${$}
             <bar-card-background
-              style="margin: ${m}; height: ${d}${"number"==typeof d?"px":""}; ${R}"
+              style="margin: ${m}; height: ${d}${"number"==typeof d?"px":""}; ${U}"
             >
               <bar-card-backgroundbar style="--bar-color: ${O};"></bar-card-backgroundbar>
               ${"on"==a.animation.state?z`
                     <bar-card-animationbar
-                      style="animation: ${M} ${a.animation.speed}s infinite ease-out; --bar-percent: ${B}%; --bar-color: ${O}; --animation-direction: ${L};"
-                      class="${D}"
+                      style="animation: ${R} ${a.animation.speed}s infinite ease-out; --bar-percent: ${L}%; --bar-color: ${O}; --animation-direction: ${M};"
+                      class="${B}"
                     ></bar-card-animationbar>
                   `:""}
               <bar-card-currentbar
@@ -1214,10 +1214,10 @@ found at http://polymer.github.io/PATENTS.txt
               ></bar-card-currentbar>
               ${a.target?z`
                     <bar-card-targetbar
-                      style="--bar-color: ${O}; --bar-percent: ${I}%; --bar-target-percent: ${U}%; --bar-direction: ${f};"
+                      style="--bar-color: ${O}; --bar-percent: ${V}%; --bar-target-percent: ${I}%; --bar-direction: ${f};"
                     ></bar-card-targetbar>
                     <bar-card-markerbar
-                      style="--bar-color: ${O}; --bar-target-percent: ${V}%; ${b}: calc(${V}% - 1px); ${y}}"
+                      style="--bar-color: ${O}; --bar-target-percent: ${I}%; ${b}: calc(var(--bar-target-percent) - 1px); ${y}"
                     ></bar-card-markerbar>
                   `:""}
               <bar-card-contentbar
