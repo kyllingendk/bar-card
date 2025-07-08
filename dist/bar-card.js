@@ -1156,7 +1156,7 @@ found at http://polymer.github.io/PATENTS.txt
               <bar-card-iconbar>
                 <ha-icon icon="${u}"></ha-icon>
               </bar-card-iconbar>
-            `,m="0px";break;case"off":m="0px"}const _=a.name?a.name:r.attributes.friendly_name;let $,w,x,S,A,k,C;switch(a.positions.name){case"outside":$=z`
+            `,m="0px";break;case"off":m="0px"}const _=a.name?a.name:r.attributes.friendly_name;let $,w,x,S,A,k,C,E;switch(a.positions.name){case"outside":$=z`
               <bar-card-name
                 class="${a.entity_row?"name-outside":""}"
                 style="${"up"==a.direction?"":a.width?`width: calc(100% - ${a.width});`:""}"
@@ -1164,69 +1164,73 @@ found at http://polymer.github.io/PATENTS.txt
               >
             `,m="0px";break;case"inside":w=z`
               <bar-card-name>${_}</bar-card-name>
-            `}switch(x=isNaN(Number(s))?"":a.unit_of_measurement?a.unit_of_measurement:r.attributes.unit_of_measurement,a.positions.minmax){case"outside":S=z`
+            `}switch(x=isNaN(Number(s))?"":a.unit_of_measurement?a.unit_of_measurement:r.attributes.unit_of_measurement,a.positions.minmax){case"bothsides":S=z`
+              <bar-card-min>${l}${x}</bar-card-min>
+            `,A=z`
+              <bar-card-max>${c}${x}</bar-card-max>
+            `;break;case"outside":A=z`
               <bar-card-min>${l}${x}</bar-card-min>
               <bar-card-divider>/</bar-card-divider>
               <bar-card-max>${c}${x}</bar-card-max>
-            `;break;case"inside":A=z`
+            `;break;case"inside":k=z`
               <bar-card-min class="${"up"==a.direction?"min-direction-up":"min-direction-right"}"
                 >${l}${x}</bar-card-min
               >
               <bar-card-divider>/</bar-card-divider>
               <bar-card-max> ${c}${x}</bar-card-max>
-            `}switch(a.positions.value){case"outside":k=z`
+            `}switch(a.positions.value){case"outside":C=z`
               <bar-card-value class="${"up"==a.direction?"value-direction-up":"value-direction-right"}"
                 >${a.complementary?c-s:s} ${x}</bar-card-value
               >
-            `;break;case"inside":C=z`
+            `;break;case"inside":E=z`
               <bar-card-value
                 class="${"inside"==a.positions.minmax?"":"up"==a.direction?"value-direction-up":"value-direction-right"}"
                 >${a.complementary?c-s:s} ${x}</bar-card-value
               >
-            `;break;case"off":m="0px"}let E="";s>this._stateArray[t]?(E="▲","up"==a.direction?this._animationState[t]="animation-increase-vertical":this._animationState[t]="animation-increase"):s<this._stateArray[t]?(E="▼","up"==a.direction?this._animationState[t]="animation-decrease-vertical":this._animationState[t]="animation-decrease"):this._animationState[t]=this._animationState[t],isNaN(Number(s))&&(E="");const O=this._computeBarColor(s,t);let N,P;switch(a.positions.indicator){case"outside":N=z`
+            `;break;case"off":m="0px"}let O="";s>this._stateArray[t]?(O="▲","up"==a.direction?this._animationState[t]="animation-increase-vertical":this._animationState[t]="animation-increase"):s<this._stateArray[t]?(O="▼","up"==a.direction?this._animationState[t]="animation-decrease-vertical":this._animationState[t]="animation-decrease"):this._animationState[t]=this._animationState[t],isNaN(Number(s))&&(O="");const N=this._computeBarColor(s,t);let P,T;switch(a.positions.indicator){case"outside":P=z`
               <bar-card-indicator
                 class="${"up"==a.direction?"":"indicator-direction-right"}"
-                style="--bar-color: ${O};"
-                >${E}</bar-card-indicator
+                style="--bar-color: ${N};"
+                >${O}</bar-card-indicator
               >
-            `;break;case"inside":P=z`
-              <bar-card-indicator style="--bar-color: ${O};">${E}</bar-card-indicator>
-            `}const T=this._computePercent(s,t,c,l),j=fe(this.hass,null!==(e=a.target)&&void 0!==e?e:0);this._computePercent(j,t,c,l);let V=T,I=this._computePercent(j,t,c,l);I<V&&(V=I,I=T);let U="";a.width&&(g="center",U="width: "+a.width);const R=this._animationState[t];let M="right",L=100*T,B="animationbar-horizontal";"animation-increase-vertical"!=R&&"animation-decrease-vertical"!=R||(M="bottom",B="animationbar-vertical",L=100*(100-T)),o.push(z`
+            `;break;case"inside":T=z`
+              <bar-card-indicator style="--bar-color: ${N};">${O}</bar-card-indicator>
+            `}const j=this._computePercent(s,t,c,l),V=fe(this.hass,null!==(e=a.target)&&void 0!==e?e:0);this._computePercent(V,t,c,l);let I=j,U=this._computePercent(V,t,c,l);U<I&&(I=U,U=j);let R="";a.width&&(g="center",R="width: "+a.width);const M=this._animationState[t];let L="right",B=100*j,D="animationbar-horizontal";"animation-increase-vertical"!=M&&"animation-decrease-vertical"!=M||(L="bottom",D="animationbar-vertical",B=100*(100-j)),o.push(z`
           <bar-card-card
             style="flex-direction: ${v}; align-items: ${g};"
             @action=${this._handleAction}
             .config=${a}
             .actionHandler=${xe({hasHold:ge(a.hold_action),hasDoubleClick:ge(a.double_tap_action)})}
           >
-            ${h} ${N} ${$}
+            ${h} ${P} ${$} ${S}
             <bar-card-background
-              style="margin: ${m}; height: ${d}${"number"==typeof d?"px":""}; ${U}"
+              style="margin: ${m}; height: ${d}${"number"==typeof d?"px":""}; ${R}"
             >
-              <bar-card-backgroundbar style="--bar-color: ${O};"></bar-card-backgroundbar>
+              <bar-card-backgroundbar style="--bar-color: ${N};"></bar-card-backgroundbar>
               ${"on"==a.animation.state?z`
                     <bar-card-animationbar
-                      style="animation: ${R} ${a.animation.speed}s infinite ease-out; --bar-percent: ${L}%; --bar-color: ${O}; --animation-direction: ${M};"
-                      class="${B}"
+                      style="animation: ${M} ${a.animation.speed}s infinite ease-out; --bar-percent: ${B}%; --bar-color: ${N}; --animation-direction: ${L};"
+                      class="${D}"
                     ></bar-card-animationbar>
                   `:""}
               <bar-card-currentbar
-                style="--bar-color: ${O}; --bar-percent: ${T}%; --bar-direction: ${f}"
+                style="--bar-color: ${N}; --bar-percent: ${j}%; --bar-direction: ${f}"
               ></bar-card-currentbar>
               ${a.target?z`
                     <bar-card-targetbar
-                      style="--bar-color: ${O}; --bar-percent: ${V}%; --bar-target-percent: ${I}%; --bar-direction: ${f};"
+                      style="--bar-color: ${N}; --bar-percent: ${I}%; --bar-target-percent: ${U}%; --bar-direction: ${f};"
                     ></bar-card-targetbar>
                     <bar-card-markerbar
-                      style="--bar-color: ${O}; --bar-target-percent: ${I}%; ${b}: calc(var(--bar-target-percent) - 1px); ${y}"
+                      style="--bar-color: ${N}; --bar-target-percent: ${U}%; ${b}: calc(var(--bar-target-percent) - 1px); ${y}"
                     ></bar-card-markerbar>
                   `:""}
               <bar-card-contentbar
                 class="${"up"==a.direction?"contentbar-direction-up":"contentbar-direction-right"}"
               >
-                ${p} ${P} ${w} ${A} ${C}
+                ${p} ${T} ${w} ${k} ${E}
               </bar-card-contentbar>
             </bar-card-background>
-            ${S} ${k}
+            ${A} ${C}
           </bar-card-card>
         `),s!==this._stateArray[t]&&(this._stateArray[t]=s)}i.push(o)}let n="column";(this._config.columns||this._config.stack)&&(n="row");const o=[];for(const e of i)o.push(z`
         <bar-card-row style="flex-direction: ${n};">${e}</bar-card-row>

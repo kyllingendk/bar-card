@@ -70,7 +70,7 @@
 | icon | string | outside | `inside`, `outside`, `off`
 | indicator | string | outside | `inside`, `outside`, `off`
 | name | string | inside | `inside`, `outside`, `off`
-| minmax | string | off | `inside`, `outside`, `off`
+| minmax | string | off | `inside`, `outside`, `bothsides`, `off`
 | value | string | inside | `inside`, `outside`, `off`
 
 ## Theme Variables

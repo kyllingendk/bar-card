@@ -260,9 +260,18 @@ export class BarCard extends LitElement {
         }
 
         // Set min and max html based on position.
+        let minMaxLeft;
         let minMaxOutside;
         let minMaxInside;
         switch (config.positions.minmax) {
+          case 'bothsides':
+            minMaxLeft = html`
+              <bar-card-min>${min}${unitOfMeasurement}</bar-card-min>
+            `;
+            minMaxOutside = html`
+              <bar-card-max>${max}${unitOfMeasurement}</bar-card-max>
+            `;
+            break;
           case 'outside':
             minMaxOutside = html`
               <bar-card-min>${min}${unitOfMeasurement}</bar-card-min>
@@ -393,7 +402,7 @@ export class BarCard extends LitElement {
               hasDoubleClick: hasAction(config.double_tap_action),
             })}
           >
-            ${iconOutside} ${indicatorOutside} ${nameOutside}
+            ${iconOutside} ${indicatorOutside} ${nameOutside} ${minMaxLeft}
             <bar-card-background
               style="margin: ${backgroundMargin}; height: ${barHeight}${typeof barHeight == 'number'
                 ? 'px'
