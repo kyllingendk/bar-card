@@ -1165,7 +1165,7 @@ found at http://polymer.github.io/PATENTS.txt
             `,m="0px";break;case"inside":w=z`
               <bar-card-name>${_}</bar-card-name>
             `}switch(x=isNaN(Number(s))?"":a.unit_of_measurement?a.unit_of_measurement:r.attributes.unit_of_measurement,a.positions.minmax){case"outside":S=z`
-              <bar-card-min>${c}${x}</bar-card-min>
+              <bar-card-min>${l}${x}</bar-card-min>
               <bar-card-divider>/</bar-card-divider>
               <bar-card-max>${c}${x}</bar-card-max>
             `;break;case"inside":A=z`
