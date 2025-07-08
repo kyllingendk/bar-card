@@ -963,6 +963,7 @@ found at http://polymer.github.io/PATENTS.txt
       width: 40px;
     }
     bar-card-currentbar,
+    bar-card-currentthumb,
     bar-card-backgroundbar,
     bar-card-contentbar,
     bar-card-targetbar,
@@ -998,7 +999,7 @@ found at http://polymer.github.io/PATENTS.txt
       );
     }
     bar-card-currentthumb {
-      left: calc( var(--bar-percent)% - 20px );
+      left: calc( var(--bar-percent) - 20px );
       width: 40px;
       background: none;
       background-color: white;
@@ -1226,7 +1227,9 @@ found at http://polymer.github.io/PATENTS.txt
               ${o.value_as_thumb?z`
                     <bar-card-currentthumb
                       style="--bar-color: ${T}; --bar-percent: ${I}%; --bar-direction: ${b}"
-                    ></bar-card-currentthumb>
+                    >
+                      ${o.complementary?c-s:s}
+                    </bar-card-currentthumb>
                   `:z`
                     <bar-card-currentbar
                       style="--bar-color: ${T}; --bar-percent: ${I}%; --bar-direction: ${b}"
