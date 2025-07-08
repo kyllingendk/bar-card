@@ -16,9 +16,13 @@ export interface BarCardConfig {
   height: string | number;
   hold_action?: ActionConfig;
   icon: any;
+  value_as_thumb: boolean;
   limit_value: boolean;
   max: number | string;
   min: number | string;
+  limit_valuetorange: boolean;
+  rangemax: number | string;
+  rangemin: number | string;
   name: string;
   positions: any;
   severity: any;

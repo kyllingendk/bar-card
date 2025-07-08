@@ -97,6 +97,16 @@ export const styles = html`
         #0000 var(--bar-percent)
       );
     }
+    bar-card-currentthumb {
+      left: calc( var(--bar-percent)% - 20px );
+      width: 40px;
+      background: none;
+      background-color: white;
+      opacity: 1;
+      z-index: 5;
+      border: 2px solid;
+      top: -2px;
+    }
     bar-card-targetbar {
       background: linear-gradient(
         to var(--bar-direction),

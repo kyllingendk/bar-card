@@ -37,6 +37,11 @@
 | limit_value | boolean | false | Limits value displayed to `min` and `max` value.
 | max | number or string | 100 | Defines maximum value of the bar using a number or a entity.
 | min | number or string | 0 | Defines minimum value of the bar using a number or a entity.
+| limit_valuetorange | boolean | false | Limits value displayed to `rangemin` and `rangemax` value.
+| rangemax | number or string | none | Defines maximum value of the range bar using a number or a entity.
+| rangemin | number or string | none | Defines minimum value of the range bar using a number or a entity.
+| value_as_thumb | boolean | false | Displays current value as thumb
+| value_as_thumb | boolean | false | Displays current value as thumb
 | name | string | none | Defines custom entity name.
 | positions | object | none | Defines the positions of the card elements. See [Positions Options](#positions-options).
 | severity | object | none | A list of severity values. See [Severity Options](#severity-options).

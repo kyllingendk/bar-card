@@ -155,6 +155,15 @@ export class BarCard extends LitElement {
           entityState = Math.max(entityState, min);
         }
 
+        // If rangemin and rangemax is defined, display minmax bar.
+        const rangemax = getNumericalValueBasedOnType(this.hass, config.rangemax);
+        const rangemin = getNumericalValueBasedOnType(this.hass, config.rangemin);
+        // If limit_valuetorange is defined limit the displayed value to min and max.
+        if (config.limit_valuetorange && (rangemax != 0 || rangemin != 0)) {
+          entityState = Math.min(entityState, rangemax);
+          entityState = Math.max(entityState, rangemin);
+        }
+        
         // If decimal is defined check if NaN and apply number fix.
         if (!isNaN(Number(entityState))) {
           if (config.decimal == 0) entityState = Number(entityState).toFixed(0);
@@ -273,9 +282,6 @@ export class BarCard extends LitElement {
             `;
             break;
           case 'outside':
-            minMaxLeft = html`
-              <bar-card-min>${min}${unitOfMeasurement}</bar-card-min>
-            `;
             minMaxOutside = html`
               <bar-card-min>${min}${unitOfMeasurement}</bar-card-min>
               <bar-card-divider>/</bar-card-divider>
@@ -421,9 +427,17 @@ export class BarCard extends LitElement {
                     ></bar-card-animationbar>
                   `
                 : ''}
-              <bar-card-currentbar
-                style="--bar-color: ${barColor}; --bar-percent: ${barPercent}%; --bar-direction: ${barDirection}"
-              ></bar-card-currentbar>
+              ${config.value_as_thumb 
+                ? html`
+                    <bar-card-currentthumb
+                      style="--bar-color: ${barColor}; --bar-percent: ${barPercent}%; --bar-direction: ${barDirection}"
+                    ></bar-card-currentthumb>
+                  `
+                : html`
+                    <bar-card-currentbar
+                      style="--bar-color: ${barColor}; --bar-percent: ${barPercent}%; --bar-direction: ${barDirection}"
+                    ></bar-card-currentbar>
+                  `}
               ${config.target
                 ? html`
                     <bar-card-targetbar

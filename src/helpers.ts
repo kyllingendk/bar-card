@@ -47,7 +47,7 @@ export function getNumericalValueBasedOnType(hass: HomeAssistant | undefined, va
     if (isNaN(parsedValue)) {
       return 0;
     }
-    return parsedValue
+    return parsedValue;
   } 
   return 0;
 }
