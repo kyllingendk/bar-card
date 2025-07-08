@@ -63,6 +63,7 @@ export const styles = html`
       width: 40px;
     }
     bar-card-currentbar,
+    bar-card-currentthumb,
     bar-card-backgroundbar,
     bar-card-contentbar,
     bar-card-targetbar,
@@ -98,7 +99,7 @@ export const styles = html`
       );
     }
     bar-card-currentthumb {
-      left: calc( var(--bar-percent)% - 20px );
+      left: calc( var(--bar-percent) - 20px );
       width: 40px;
       background: none;
       background-color: white;

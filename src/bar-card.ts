@@ -163,7 +163,7 @@ export class BarCard extends LitElement {
           entityState = Math.min(entityState, rangemax);
           entityState = Math.max(entityState, rangemin);
         }
-        
+
         // If decimal is defined check if NaN and apply number fix.
         if (!isNaN(Number(entityState))) {
           if (config.decimal == 0) entityState = Number(entityState).toFixed(0);
@@ -427,11 +427,13 @@ export class BarCard extends LitElement {
                     ></bar-card-animationbar>
                   `
                 : ''}
-              ${config.value_as_thumb 
+              ${config.value_as_thumb
                 ? html`
                     <bar-card-currentthumb
                       style="--bar-color: ${barColor}; --bar-percent: ${barPercent}%; --bar-direction: ${barDirection}"
-                    ></bar-card-currentthumb>
+                    >
+                      ${config.complementary ? max - entityState : entityState}
+                    </bar-card-currentthumb>
                   `
                 : html`
                     <bar-card-currentbar
