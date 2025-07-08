@@ -273,6 +273,9 @@ export class BarCard extends LitElement {
             `;
             break;
           case 'outside':
+            minMaxLeft = html`
+              <bar-card-min>${min}${unitOfMeasurement}</bar-card-min>
+            `;
             minMaxOutside = html`
               <bar-card-min>${min}${unitOfMeasurement}</bar-card-min>
               <bar-card-divider>/</bar-card-divider>

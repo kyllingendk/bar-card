@@ -63,7 +63,7 @@
 
 | Name | Type | Default | Description
 | ---- | ---- | ------- | -----------
-| icon | string | outside | `inside`, `outside`, `off`
+| icon | string | outside | `inside`, `outside`, `bothsides`, `off`
 | indicator | string | outside | `inside`, `outside`, `off`
 | name | string | inside | `inside`, `outside`, `off`
 | minmax | string | off | `inside`, `outside`, `off`

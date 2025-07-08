@@ -1168,7 +1168,9 @@ found at http://polymer.github.io/PATENTS.txt
               <bar-card-min>${l}${x}</bar-card-min>
             `,A=z`
               <bar-card-max>${c}${x}</bar-card-max>
-            `;break;case"outside":A=z`
+            `;break;case"outside":S=z`
+              <bar-card-min>${l}${x}</bar-card-min>
+            `,A=z`
               <bar-card-min>${l}${x}</bar-card-min>
               <bar-card-divider>/</bar-card-divider>
               <bar-card-max>${c}${x}</bar-card-max>
