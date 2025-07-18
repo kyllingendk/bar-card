@@ -43,7 +43,7 @@ export function getNumericalValueBasedOnType(hass: HomeAssistant | undefined, va
     return 0;
   }
   if (hass.states[value]) {
-    const parsedValue = parseInt(hass.states[value].state);
+    const parsedValue = parseFloat(hass.states[value].state);
     if (isNaN(parsedValue)) {
       return 0;
     }

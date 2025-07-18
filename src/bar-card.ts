@@ -10,11 +10,12 @@ import {
 
 import './editor';
 
-import { BarCardConfig } from './types';
+import { BarCardConfig, Rgb } from './types';
 import { actionHandler } from './action-handler-directive';
 import { CARD_VERSION } from './const';
 import { localize } from './localize/localize';
 import { mergeDeep, hasConfigOrEntitiesChanged, createConfigArray, getNumericalValueBasedOnType } from './helpers';
+import { extractMostOccuring, max, min, round, roundDown, roundIfNotNull, roundUp } from './utils';
 import { styles } from './styles';
 
 /* eslint no-console: 0 */
@@ -23,6 +24,15 @@ console.info(
   'color: orange; font-weight: bold; background: black',
   'color: white; font-weight: bold; background: dimgray',
 );
+
+const gradientMap: Map<number, Rgb> = new Map()
+  .set(-20, new Rgb(0, 60, 98)) // dark blue
+  .set(-10, new Rgb(120, 162, 204)) // darker blue
+  .set(0, new Rgb(164, 195, 210)) // light blue
+  .set(10, new Rgb(121, 210, 179)) // turquoise
+  .set(20, new Rgb(252, 245, 112)) // yellow
+  .set(30, new Rgb(255, 150, 79)) // orange
+  .set(40, new Rgb(255, 192, 159)); // red
 
 // TODO Name your custom element
 @customElement('bar-card')
@@ -44,6 +54,63 @@ export class BarCard extends LitElement {
 
   protected shouldUpdate(changedProps: PropertyValues): boolean {
     return hasConfigOrEntitiesChanged(this, changedProps, false);
+  }
+
+  private gradientRange(minTemp: number, maxTemp: number): Rgb[] {
+    const minTempCelsius = minTemp;
+    const maxTempCelsius = maxTemp;
+    const minVal = Math.max(roundDown(minTempCelsius, 10), min([...gradientMap.keys()]));
+    const maxVal = Math.min(roundUp(maxTempCelsius, 10), max([...gradientMap.keys()]));
+    return (
+      Array.from(gradientMap.keys())
+        .filter(temp => temp >= minVal && temp <= maxVal)
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        .map(temp => gradientMap.get(temp)!)
+    );
+  }
+
+  private gradient(rgbs: Rgb[], fromPercent: number, toPercent: number): string {
+    if (rgbs.length <= 1) {
+      const rgb = rgbs[0] ?? new Rgb(255, 255, 255);
+      return [rgb, rgb].map(rgb => rgb.toRgbString()).join(',');
+    }
+    const [fromRgb, fromIndex] = this.calculateRgb(rgbs, fromPercent, 'left');
+    const [toRgb, toIndex] = this.calculateRgb(rgbs, toPercent, 'right');
+    const between = rgbs.slice(fromIndex + 1, toIndex);
+
+    return [fromRgb, ...between, toRgb].map(rgb => rgb.toRgbString()).join(',');
+  }
+
+  private calculateRgb(rgbs: Rgb[], percent: number, pickIndex: 'left' | 'right'): [Rgb, number] {
+    function valueAtPosition(start: number, end: number, percent: number): number {
+      const abs = Math.abs(start - end);
+      const value = (abs / 100) * percent;
+      if (start > end) {
+        return round(start - value);
+      } else {
+        return round(start + value);
+      }
+    }
+    function rgbAtPosition(startIndex: number, endIndex: number, percentToNextIndex: number, rgbs: Rgb[]): Rgb {
+      const start = rgbs[startIndex];
+      const end = rgbs[endIndex];
+      const percent = percentToNextIndex < 0 ? 100 + percentToNextIndex : percentToNextIndex;
+      const left = percentToNextIndex < 0 ? end : start;
+      const right = percentToNextIndex < 0 ? start : end;
+      const r = valueAtPosition(left.r, right.r, percent);
+      const g = valueAtPosition(left.g, right.g, percent);
+      const b = valueAtPosition(left.b, right.b, percent);
+      return new Rgb(r, g, b);
+    }
+
+    const steps = 100 / (rgbs.length - 1);
+    const step = percent / steps;
+    const startIndex = Math.round(step);
+    const percentToNextIndex = (100 / steps) * (percent - startIndex * steps);
+    const endIndex = percentToNextIndex === 0 ? startIndex : percentToNextIndex < 0 ? startIndex - 1 : startIndex + 1;
+    const rgb = rgbAtPosition(startIndex, endIndex, percentToNextIndex, rgbs);
+    const index = pickIndex === 'left' ? Math.min(startIndex, endIndex) : Math.max(startIndex, endIndex);
+    return [rgb, index];
   }
 
   public setConfig(config: BarCardConfig): void {
@@ -148,12 +215,13 @@ export class BarCard extends LitElement {
         }
 
         // If limit_value is defined limit the displayed value to min and max.
-        const max = getNumericalValueBasedOnType(this.hass, config.max);
-        const min = getNumericalValueBasedOnType(this.hass, config.min);
+        const max = roundUp(getNumericalValueBasedOnType(this.hass, config.max));
+        const min = roundDown(getNumericalValueBasedOnType(this.hass, config.min));
         if (config.limit_value) {
           entityState = Math.min(entityState, max);
           entityState = Math.max(entityState, min);
         }
+        const gradientRange = this.gradientRange(min, max);
 
         // If rangemin and rangemax is defined, display minmax bar.
         const rangemax = getNumericalValueBasedOnType(this.hass, config.rangemax);
@@ -294,7 +362,44 @@ export class BarCard extends LitElement {
                 >${min}${unitOfMeasurement}</bar-card-min
               >
               <bar-card-divider>/</bar-card-divider>
-              <bar-card-max> ${max}${unitOfMeasurement}</bar-card-max>
+              <bar-card-max>${max}${unitOfMeasurement}</bar-card-max>
+            `;
+            break;
+          case 'off':
+            break;
+        }
+
+        // Set min and max range html based on position.
+        let rangeMinMaxLeft;
+        let rangeMinMaxOutside;
+        let rangeMinMaxInside;
+        switch (config.positions.rangeminmax) {
+          case 'bothsides':
+            rangeMinMaxLeft = html`
+              <bar-card-rangemin title="${rangemin}${unitOfMeasurement}"
+                >${round(rangemin)}${unitOfMeasurement}</bar-card-rangemin
+              >
+            `;
+            rangeMinMaxOutside = html`
+              <bar-card-rangemax title="${rangemax}${unitOfMeasurement}"
+                >${round(rangemax)}${unitOfMeasurement}</bar-card-rangemax
+              >
+            `;
+            break;
+          case 'outside':
+            rangeMinMaxOutside = html`
+              <bar-card-rangemin>${rangemin}${unitOfMeasurement}</bar-card-rangemin>
+              <bar-card-rangedivider>/</bar-card-rangedivider>
+              <bar-card-rangemax>${rangemax}${unitOfMeasurement}</bar-card-rangemax>
+            `;
+            break;
+          case 'inside':
+            rangeMinMaxInside = html`
+              <bar-card-rangemin class="${config.direction == 'up' ? 'min-direction-up' : 'min-direction-right'}"
+                >${rangemin}${unitOfMeasurement}</bar-card-rangemin
+              >
+              <bar-card-rangedivider>/</bar-card-rangedivider>
+              <bar-card-rangemax>${rangemax}${unitOfMeasurement}</bar-card-rangemax>
             `;
             break;
           case 'off':
@@ -373,6 +478,10 @@ export class BarCard extends LitElement {
 
         // Set bar percent and marker percent based on value difference.
         const barPercent = this._computePercent(entityState, index, max, min);
+        const rangeStartPercent = this._computePercent(rangemin, index, max, min);
+        const rangeEndPercent = this._computePercent(rangemax, index, max, min);
+        const rangeWidthPercent = rangeEndPercent - rangeStartPercent;
+        const showRangeBar = rangemax - rangemin > 2;
         const targetValue = getNumericalValueBasedOnType(this.hass, config.target ?? 0);
         const targetMarkerPercent = this._computePercent(targetValue, index, max, min);
         let targetStartPercent = barPercent;
@@ -411,7 +520,7 @@ export class BarCard extends LitElement {
               hasDoubleClick: hasAction(config.double_tap_action),
             })}
           >
-            ${iconOutside} ${indicatorOutside} ${nameOutside} ${minMaxLeft}
+            ${iconOutside} ${indicatorOutside} ${nameOutside} ${minMaxLeft} ${rangeMinMaxLeft}
             <bar-card-background
               style="margin: ${backgroundMargin}; height: ${barHeight}${typeof barHeight == 'number'
                 ? 'px'
@@ -425,6 +534,18 @@ export class BarCard extends LitElement {
                         .speed}s infinite ease-out; --bar-percent: ${animationPercent}%; --bar-color: ${barColor}; --animation-direction: ${animationDirection};"
                       class="${animationClass}"
                     ></bar-card-animationbar>
+                  `
+                : ''}
+              ${showRangeBar
+                ? html`
+                    <bar-card-rangebar
+                      style="--bar-color: ${barColor}; --bar-startpercent: ${rangeStartPercent}%; --bar-endpercent: ${rangeWidthPercent}%; --bar-direction: ${barDirection}; --gradient: ${this.gradient(
+                        gradientRange,
+                        rangeStartPercent,
+                        rangeEndPercent,
+                      )}"
+                    >
+                    </bar-card-rangebar>
                   `
                 : ''}
               ${config.value_as_thumb
@@ -453,10 +574,10 @@ export class BarCard extends LitElement {
               <bar-card-contentbar
                 class="${config.direction == 'up' ? 'contentbar-direction-up' : 'contentbar-direction-right'}"
               >
-                ${iconInside} ${indicatorInside} ${nameInside} ${minMaxInside} ${valueInside}
+                ${iconInside} ${indicatorInside} ${nameInside} ${rangeMinMaxInside} ${minMaxInside} ${valueInside}
               </bar-card-contentbar>
             </bar-card-background>
-            ${minMaxOutside} ${valueOutside}
+            ${rangeMinMaxOutside} ${minMaxOutside} ${valueOutside}
           </bar-card-card>
         `);
 

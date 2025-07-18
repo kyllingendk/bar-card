@@ -66,6 +66,7 @@ export const styles = html`
     bar-card-currentthumb,
     bar-card-backgroundbar,
     bar-card-contentbar,
+    bar-card-rangebar,
     bar-card-targetbar,
     bar-card-animationbar {
       position: absolute;
@@ -87,8 +88,8 @@ export const styles = html`
     }
     bar-card-backgroundbar {
       background: var(--bar-color);
-      filter: brightness(0.5);
-      opacity: 0.25;
+      filter: brightness(0.75);
+      opacity: 0.05;
     }
     bar-card-currentbar {
       background: linear-gradient(
@@ -98,15 +99,34 @@ export const styles = html`
         #0000 var(--bar-percent)
       );
     }
+    bar-card-rangebar {
+      left: var(--bar-startpercent);
+      width: var(--bar-endpercent);
+      background: linear-gradient(45deg, var(--gradient));
+      opacity: 1;
+      z-index: 4;
+      top: -1px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.85em;
+      padding-top: 1px;
+    }
     bar-card-currentthumb {
-      left: calc( var(--bar-percent) - 20px );
-      width: 40px;
+      left: calc( var(--bar-percent) - 15px );
+      width: 30px;
       background: none;
-      background-color: white;
+      background-color: beige;
       opacity: 1;
       z-index: 5;
-      border: 2px solid;
-      top: -2px;
+      border: 2px solid #BBB;
+      top: -4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.85em;
+      padding-top: 2px;
+      color: darkred;
     }
     bar-card-targetbar {
       background: linear-gradient(
@@ -123,7 +143,7 @@ export const styles = html`
     bar-card-markerbar {
       background: var(--bar-color);
       filter: brightness(0.75);
-      opacity: 50%;
+      opacity: 0.05;
       position: absolute;
     }
     bar-card-animationbar {
@@ -209,24 +229,39 @@ export const styles = html`
     bar-card-value,
     bar-card-min,
     bar-card-max,
-    bar-card-divider {
+    bar-card-divider,
+    bar-card-rangemin,
+    bar-card-rangemax,
+    bar-card-rangedivider {
       align-self: center;
       position: relative;
     }
     bar-card-min,
     bar-card-max,
-    bar-card-divider {
+    bar-card-divider,
+    bar-card-rangemin,
+    bar-card-rangemax,
+    bar-card-rangedivider {
       font-size: 10px;
       margin: 2px;
       opacity: 0.5;
     }
+    bar-card-rangemin,
+    bar-card-rangemax {
+      width: 25px;
+    }
+    bar-card-rangemax {
+      text-align: right;
+    }
+
     .min-direction-up {
       margin-top: auto;
     }
     .min-direction-right {
       margin-left: auto;
     }
-    bar-card-divider {
+    bar-card-divider,
+    bar-card-rangedivider {
       margin-left: 0px;
       margin-right: 0px;
     }
