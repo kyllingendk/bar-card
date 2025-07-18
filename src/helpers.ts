@@ -61,7 +61,13 @@ export function hasConfigOrEntitiesChanged(element: any, changedProps: PropertyV
     if (config.entity) {
       const oldHass = changedProps.get('hass') as HomeAssistant | undefined;
       if (oldHass) {
-        if (oldHass.states[config.entity] !== element.hass!.states[config.entity]) {
+        if (
+          oldHass.states[config.entity] !== element.hass!.states[config.entity] ||
+          oldHass.states[config.min] !== element.hass!.states[config.min] ||
+          oldHass.states[config.max] !== element.hass!.states[config.max] ||
+          oldHass.states[config.rangemin] !== element.hass!.states[config.rangemin] ||
+          oldHass.states[config.rangemax] !== element.hass!.states[config.rangemax]
+        ) {
           return true;
         } else {
           continue;
