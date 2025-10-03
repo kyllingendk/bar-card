@@ -206,6 +206,7 @@ export class BarCard extends LitElement {
         } else {
           entityState = state.state;
         }
+        entityState = round(entityState, 0.1);
 
         // Contine if severity hide is defined.
         if (config.severity) {
