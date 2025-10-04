@@ -482,7 +482,7 @@ export class BarCard extends LitElement {
         const rangeStartPercent = this._computePercent(rangemin, index, max, min);
         const rangeEndPercent = this._computePercent(rangemax, index, max, min);
         const rangeWidthPercent = rangeEndPercent - rangeStartPercent;
-        const showRangeBar = rangemax - rangemin > 2;
+        const showRangeBar = rangemax - rangemin > 0;
         const targetValue = getNumericalValueBasedOnType(this.hass, config.target ?? 0);
         const targetMarkerPercent = this._computePercent(targetValue, index, max, min);
         let targetStartPercent = barPercent;
